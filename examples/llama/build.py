@@ -22,7 +22,7 @@ import tensorrt as trt
 import torch
 import torch.multiprocessing as mp
 from transformers import LlamaConfig, LlamaForCausalLM
-from weight import (get_scaling_factors, load_from_awq_llama, load_from_binary,
+from .weight import (get_scaling_factors, load_from_awq_llama, load_from_binary,
                     load_from_gptq_llama, load_from_hf_llama,
                     load_from_meta_llama)
 
@@ -38,7 +38,7 @@ from tensorrt_llm.plugin.plugin import ContextFMHAType
 from tensorrt_llm.profiler import check_gpt_mem_usage
 from tensorrt_llm.quantization import QuantMode
 
-from weight import parse_ft_config  # isort:skip
+from .weight import parse_ft_config  # isort:skip
 
 MODEL_NAME = "llama"
 
@@ -143,7 +143,7 @@ def parse_arguments():
         'The path of to read timing cache from, will be ignored if the file does not exist'
     )
     parser.add_argument('--log_level', type=str, default='info')
-    parser.add_argument('--vocab_size', type=int, default=32000)
+    parser.add_argument('--vocab_size', type=int, default=None)
     parser.add_argument('--n_layer', type=int, default=32)
     parser.add_argument('--n_positions', type=int, default=2048)
     parser.add_argument('--n_embd', type=int, default=4096)
@@ -742,7 +742,7 @@ def build(rank, args):
         assert ok, "Failed to save timing cache."
 
 
-if __name__ == '__main__':
+def main():
     args = parse_arguments()
     tik = time.time()
     if args.parallel_build and args.world_size > 1 and \
@@ -759,3 +759,7 @@ if __name__ == '__main__':
     tok = time.time()
     t = time.strftime('%H:%M:%S', time.gmtime(tok - tik))
     logger.info(f'Total time of building all {args.world_size} engines: {t}')
+
+
+if __name__ == '__main__':
+    main()

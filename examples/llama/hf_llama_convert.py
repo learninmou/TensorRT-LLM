@@ -22,8 +22,8 @@ from pathlib import Path
 
 import torch
 import torch.multiprocessing as multiprocessing
-from convert import split_and_save_weight, str_to_np_dtype
-from smoothquant import (capture_activation_range, smooth_gemm,
+from .convert import split_and_save_weight, str_to_np_dtype
+from .smoothquant import (capture_activation_range, smooth_gemm,
                          smooth_gemm_fc1_gate)
 from tqdm import tqdm
 from transformers import LlamaForCausalLM, LlamaTokenizer
@@ -273,7 +273,7 @@ def hf_gpt_converter(args):
             split_and_save_weight(*starmap_arg)
 
 
-if __name__ == "__main__":
+def main():
     torch.multiprocessing.set_start_method("spawn")
 
     parser = argparse.ArgumentParser(
@@ -330,3 +330,7 @@ if __name__ == "__main__":
         "Either INT8 kv cache or SmoothQuant must be enabled for this script. Otherwise you can directly build engines from HuggingFace checkpoints, no need to do this FT-format conversion. "
 
     hf_gpt_converter(args)
+
+
+if __name__ == "__main__":
+    main()
