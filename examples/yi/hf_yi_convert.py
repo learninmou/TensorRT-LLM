@@ -15,7 +15,7 @@
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-from llama import run
+from llama import hf_llama_convert
 
 if __name__ == '__main__':
-    run.main()
+    hf_llama_convert.main()

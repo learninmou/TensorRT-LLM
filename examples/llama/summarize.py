@@ -27,7 +27,7 @@ import tensorrt_llm.profiler as profiler
 from tensorrt_llm.logger import logger
 from tensorrt_llm.quantization import QuantMode
 
-from build import get_engine_name  # isort:skip
+from .build import get_engine_name  # isort:skip
 
 
 def TRTLLaMA(args, config):
@@ -100,7 +100,7 @@ def TRTLLaMA(args, config):
     return decoder
 
 
-def main(args):
+def run(args):
     runtime_rank = tensorrt_llm.mpi_rank()
     logger.set_level(args.log_level)
 
@@ -379,7 +379,7 @@ def main(args):
                         f'  {key} : {computed_metrics_hf[key].mid[2]*100}')
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--hf_model_location',
                         type=str,
@@ -410,4 +410,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    main(args)
+    run(args)
+
+if __name__ == '__main__':
+    main()

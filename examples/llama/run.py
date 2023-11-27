@@ -25,7 +25,7 @@ import tensorrt_llm
 from tensorrt_llm.quantization import QuantMode
 from tensorrt_llm.runtime import ModelConfig, SamplingConfig
 
-from build import get_engine_name  # isort:skip
+from .build import get_engine_name  # isort:skip
 
 EOS_TOKEN = 2
 PAD_TOKEN = 2
@@ -334,6 +334,10 @@ def generate(
                          output_csv, output_npy, sequence_lengths)
 
 
-if __name__ == '__main__':
+def main():
     args = parse_arguments()
     generate(**vars(args))
+
+
+if __name__ == '__main__':
+    main()
